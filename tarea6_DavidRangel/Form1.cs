@@ -17,235 +17,53 @@ namespace tarea6_DavidRangel
             InitializeComponent();
         }
 
-        List<Alumprog2> listAlumnos = new List<Alumprog2>();
+        List<Alumprog2> listAlumnos;
         private void button1_Click(object sender, EventArgs e)
         {
             Alumprog2 alumno = new Alumprog2(txtRut.Text, txtNombre.Text, int.Parse(txtEdad.Text), txtSeccion.Text, txtAsignatura.Text, int.Parse(txtNota.Text));
             listAlumnos.Add(alumno);
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtRut.Text = "000.000.000-0";
-            txtRut.SelectionStart = txtRut.Text.Length;
+            listAlumnos = new List<Alumprog2>();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            dataGridView1.ColumnCount = 6;
+            dataGridView1.RowCount = listAlumnos.Count;
 
+            dataGridView1.Columns[0].HeaderText = "Rut";
+            dataGridView1.Columns[1].HeaderText = "Nombre";
+            dataGridView1.Columns[2].HeaderText = "Edad";
+            dataGridView1.Columns[3].HeaderText = "Seccion";
+            dataGridView1.Columns[4].HeaderText = "Asignatura";
+            dataGridView1.Columns[5].HeaderText = "Nota";
+
+            for (int i = 0; i < listAlumnos.Count; i++)
+            {
+                Alumprog2 alumprog = (Alumprog2)listAlumnos[i];
+                dataGridView1.Rows[i].Cells[0].Value = alumprog.getRut();
+                dataGridView1.Rows[i].Cells[1].Value = alumprog.getNombre();
+                dataGridView1.Rows[i].Cells[2].Value = alumprog.getEdad();
+                dataGridView1.Rows[i].Cells[3].Value = alumprog.getSeccion();
+                dataGridView1.Rows[i].Cells[4].Value = alumprog.getAsignatura();
+                dataGridView1.Rows[i].Cells[5].Value = alumprog.getNota();
+            }
         }
-        List<char> listRut = new List<char>();
-        private void txtRut_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int seleccion = txtRut.SelectionStart;
-
-            
-            if (!Char.IsControl(e.KeyChar))
+            if (e.RowIndex >= 0)
             {
-                if (Char.IsDigit(e.KeyChar) || e.KeyChar == 'k' || e.KeyChar == 'K')
-                {
-                    int longitud = listRut.Count;                  
-                    e.Handled = true;
-
-                    if (longitud >= 10)
-                    {
-                        MessageBox.Show("maximo");
-                    }
-                    else if (txtRut.TextLength > 0)
-                    {
-                        listRut.Clear();
-                        for (int i = 0; i < txtRut.Text.Length; i++)
-                        {
-                            listRut.Add(txtRut.Text[i]);
-                        }
-
-                        //MessageBox.Show(seleccion.ToString());
-
-                        listRut.Insert(seleccion, e.KeyChar);
-
-                        while (listRut.IndexOf('-') >= 0)
-                        {
-                            listRut.Remove('-');
-                        }
-                        while (listRut.IndexOf('.') >= 0)
-                        {
-                            listRut.Remove('.');
-                        }
-
-                        bool firstsZeroEliminados = false;
-                        int contador = 0;
-                        for (int i = 0; i < listRut.Count && firstsZeroEliminados == false; i++)
-                        {
-                            if (listRut[i] == '0')
-                            {
-                                contador++;
-                            }
-                            else
-                            {
-                                firstsZeroEliminados = true;
-                            }
-                        }
-
-                        while (contador > 0)
-                        {
-                            listRut.Remove('0');
-                            contador--;
-                        }
-
-                        string rut = String.Join("", listRut.ToArray());
-
-                        while (rut.Length < 10)
-                        {
-                            rut = "0" + rut;
-                        }
-                        rut = String.Format("{0}{1}{2}.{3}{4}{5}.{6}{7}{8}-{9}", rut[0], rut[1], rut[2], rut[3], rut[4], rut[5], rut[6], rut[7], rut[8], rut[9]);
-
-                        txtRut.Text = rut;
-                        txtRut.SelectionStart = seleccion;
-                    }
-                    else
-                    {
-                        listRut.Clear();
-                        if (txtRut.TextLength == 0)
-                        {
-                            listRut.Add(e.KeyChar);
-                        }
-                        string rut = String.Join("", listRut.ToArray());
-
-                        while (rut.Length < 10)
-                        {
-                            rut = "0" + rut;
-                        }
-                        rut = String.Format("{0}{1}{2}.{3}{4}{5}.{6}{7}{8}-{9}", rut[0], rut[1], rut[2], rut[3], rut[4], rut[5], rut[6], rut[7], rut[8], rut[9]);
-
-                        txtRut.Text = rut;
-                        txtRut.SelectionStart = txtRut.Text.Length;
-                    }
-                }              
-                else
-                {
-                    e.Handled = true;
-                }   
-                
+                textBox1.Text = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
+                textBox2.Text = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
+                textBox3.Text = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                textBox4.Text = dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString();
+                textBox5.Text = dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString();
+                textBox6.Text = dataGridView1.Rows[e.RowIndex].Cells[5].Value.ToString();
             }
-            
         }
-
-        private void txtRut_KeyUp(object sender, KeyEventArgs e)
-        {
-            int seleccion = txtRut.SelectionStart;
-            
-            if (e.KeyValue == 8 || e.KeyValue == 46)
-            {
-                listRut.Clear();
-                if (txtRut.TextLength > 0)
-                {
-                    for (int i = 0; i < txtRut.Text.Length; i++)
-                    {
-                        if (Char.IsNumber(txtRut.Text[i]) || txtRut.Text[i] == 'k' || txtRut.Text[i] == 'K')
-                        {
-                            listRut.Add(txtRut.Text[i]);
-                        }
-                    }
-                    bool firstsZeroEliminados = false;
-                    int contador = 0;
-                    for (int i = 0; i < listRut.Count && firstsZeroEliminados == false; i++)
-                    {
-                        if (listRut[i] == '0')
-                        {
-                            contador++;
-                        }
-                        else
-                        {
-                            firstsZeroEliminados = true;
-                        }
-                    }
-
-                    while (contador > 0)
-                    {
-                        listRut.Remove('0');
-                        contador--;
-                    }
-
-                    string rut = String.Join("", listRut.ToArray());
-
-                    while (rut.Length < 10)
-                    {
-                        rut = "0" + rut;
-                    }
-                    rut = String.Format("{0}{1}{2}.{3}{4}{5}.{6}{7}{8}-{9}", rut[0], rut[1], rut[2], rut[3], rut[4], rut[5], rut[6], rut[7], rut[8], rut[9]);
-
-                    txtRut.Text = rut;
-                    txtRut.SelectionStart = seleccion + 1;
-
-                }
-                else
-                {
-                    txtRut.Text = "000.000.000-0";
-                    txtRut.SelectionStart = txtRut.Text.Length;
-                }
-            }
-            
-            
-
-        }
-
-
-        bool validarRut(string rut)
-        {
-            int[] constantes = { 3, 2, 7, 6, 5, 4, 3, 2 };
-
-            while (rut.Length < 10)
-            {
-                rut = "0" + rut;
-            }
-
-
-
-            double suma = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                int valorActual = int.Parse(rut[i].ToString());
-                suma += constantes[i] * valorActual;
-            }
-            double division = suma / 11.0;
-            double decimales = division - (int)division;
-            double digitoNumerico = Math.Round(11 - (11 * decimales));
-            char digito;
-            if (digitoNumerico == 11)
-            {
-                digito = '0';
-            }
-            else if (digitoNumerico == 10)
-            {
-                digito = 'k';
-            }
-            else
-            {
-                digito = Convert.ToChar(digitoNumerico.ToString());
-            }
-            string condicion = "";
-
-            if (digito == rut[9])
-            {
-
-                
-            }
-            else if (digito == 'k' && rut[9] == 'K')
-            {
-
-            }
-            else
-            {
-                
-            }
-            return false;
-        }
-
-
-
-        
     }
 }
