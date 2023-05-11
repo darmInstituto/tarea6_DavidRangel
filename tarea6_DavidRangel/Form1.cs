@@ -41,16 +41,19 @@ namespace tarea6_DavidRangel
             dataGridView1.Columns[4].HeaderText = "Asignatura";
             dataGridView1.Columns[5].HeaderText = "Nota";
 
-            for (int i = 0; i < listAlumnos.Count; i++)
+            int i = 0;
+            foreach (Alumprog2 alumprog in listAlumnos)
             {
-                Alumprog2 alumprog = (Alumprog2)listAlumnos[i];
                 dataGridView1.Rows[i].Cells[0].Value = alumprog.getRut();
                 dataGridView1.Rows[i].Cells[1].Value = alumprog.getNombre();
                 dataGridView1.Rows[i].Cells[2].Value = alumprog.getEdad();
                 dataGridView1.Rows[i].Cells[3].Value = alumprog.getSeccion();
                 dataGridView1.Rows[i].Cells[4].Value = alumprog.getAsignatura();
                 dataGridView1.Rows[i].Cells[5].Value = alumprog.getNota();
+                i++;
             }
+
+            
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
